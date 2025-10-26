@@ -42,7 +42,7 @@ args = parser.parse_args()
 load assets
 """
 
-common_path = os.path.commonprefix(args.audio_file, args.face_template)
+common_path = os.path.commonprefix([args.audio_file, args.face_template])
 print("load assets...")
 template_verts = get_template_verts(args.face_template)
 audio = load_audio(args.audio_file)

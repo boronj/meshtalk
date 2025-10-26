@@ -5,7 +5,7 @@ This source code is licensed under the license found in the
 LICENSE file in the root directory of this source tree.
 """
 
-import argparse
+import argparse, os
 import numpy as np
 import torch as th
 
@@ -41,13 +41,15 @@ args = parser.parse_args()
 """
 load assets
 """
+
+common_path = os.path.commonprefix(args.audio_file, args.face_template)
 print("load assets...")
 template_verts = get_template_verts(args.face_template)
 audio = load_audio(args.audio_file)
-mean = th.from_numpy(np.load("assets/face_mean.npy"))
-stddev = th.from_numpy(np.load("assets/face_std.npy"))
-forehead_mask = th.from_numpy(load_mask("assets/forehead_mask.txt", dtype=np.float32)).cuda()
-neck_mask = th.from_numpy(load_mask("assets/neck_mask.txt", dtype=np.float32)).cuda()
+mean = th.from_numpy(np.load(f"{common_path}/face_mean.npy"))
+stddev = th.from_numpy(np.load(f"{common_path}/face_std.npy"))
+forehead_mask = th.from_numpy(load_mask(f"{common_path}/forehead_mask.txt", dtype=np.float32)).cuda()
+neck_mask = th.from_numpy(load_mask(f"{common_path}/neck_mask.txt", dtype=np.float32)).cuda()
 
 renderer = Renderer("assets/face_template.obj")
 
